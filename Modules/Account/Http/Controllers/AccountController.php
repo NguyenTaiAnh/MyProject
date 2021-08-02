@@ -49,20 +49,31 @@ class AccountController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function register(Request $request) {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|between:2,100',
-            'email' => 'required|string|email|max:100|unique:users',
-            'password' => 'required|string|confirmed|min:6',
-        ]);
+//        $validator = Validator::make($request->all(), [
+//            'name' => 'required|string|between:2,100',
+//            'username' => 'required|string|between:2,100',
+//            'email' => 'required|string|email|max:100|unique:users',
+//            'password' => 'required|string|confirmed|min:6',
+////            'phone' => 'required|int|between:11,12',
+//        ]);
 
-        if($validator->fails()){
-            return response()->json($validator->errors()->toJson(), 400);
-        }
-
-        $user = User::create(array_merge(
-            $validator->validated(),
-            ['password' => bcrypt($request->password)]
-        ));
+//        if($validator->fails()){
+//            return response()->json($validator->errors()->toJson(), 400);
+//        }
+//
+//        $user = User::create(array_merge(
+//            $validator->validated(),
+//            ['password' => bcrypt($request->password)]
+//        ));
+        $user = new User();
+        $user->username = $request['username'];
+        $user->name = $request['name'];
+        $user->phone = $request['phone'];
+        $user->email = $request['email'];
+        $user->role_id = 2;
+        $user->avatar = 'https://images.pexels.com/photos/2783477/pexels-photo-2783477.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260';
+        $user->password = bcrypt($request['password']);
+        $user->save();
 
         return response()->json([
             'message' => 'User successfully registered',

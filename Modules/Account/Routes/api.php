@@ -17,13 +17,20 @@ use Illuminate\Support\Facades\Route;
 //Route::middleware('auth:api')->get('/account', function (Request $request) {
 //    return $request->user();
 //});
-Route::group([
-    'middleware' => 'api',
-    'prefix' => 'auth'
-], function () {
-    Route::post('/login', 'AccountController@login');
-    Route::post('/register', 'AccountController@register');
-//    Route::post('/logout', [AuthController::class, 'logout']);
-//    Route::post('/refresh', [AuthController::class, 'refresh']);
-//    Route::get('/user-profile', [AuthController::class, 'userProfile']);
+//Route::group([
+//    'middleware' => 'api',
+//    'prefix' => 'auth'
+//], function () {
+//    Route::post('/login', 'AccountController@login');
+//    Route::post('/register', 'AccountController@register');
+//    Route::post('/logout', 'AccountController@logout');
+////    Route::post('/refresh', [AuthController::class, 'refresh']);
+////    Route::get('/user-profile', [AuthController::class, 'userProfile']);
+//});
+Route::group(['prefix'=>'v1'],function (){
+   Route::group(['middleware'=>'api', 'prefix'=>'auth'],function (){
+       Route::post('/login', 'AccountController@login');
+       Route::post('/register', 'AccountController@register');
+       Route::post('/logout', 'AccountController@logout');
+   });
 });
