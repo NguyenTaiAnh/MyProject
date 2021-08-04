@@ -27,10 +27,13 @@ use Illuminate\Support\Facades\Route;
 ////    Route::post('/refresh', [AuthController::class, 'refresh']);
 ////    Route::get('/user-profile', [AuthController::class, 'userProfile']);
 //});
-Route::group(['prefix'=>'v1'],function (){
-   Route::group(['middleware'=>'api', 'prefix'=>'auth'],function (){
-       Route::post('/login', 'AccountController@login');
-       Route::post('/register', 'AccountController@register');
-       Route::post('/logout', 'AccountController@logout');
-   });
+Route::group(['prefix' => 'v1'], function () {
+    Route::group(['middleware' => 'api', 'prefix' => 'auth'], function () {
+        Route::post('/login', 'AccountController@login');
+        Route::post('/register', 'AccountController@register');
+        Route::group(['middleware' => 'jwt.auth'], function () {
+            Route::post('/logout', 'AccountController@logout');
+            Route::get('/user-profile', 'AccountController@userProfile');
+        });
+    });
 });
